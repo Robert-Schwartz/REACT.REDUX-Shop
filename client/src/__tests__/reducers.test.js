@@ -5,6 +5,9 @@ import {
 	UPDATE_CURRENT_CATEGORY,
 } from "../utils/actions";
 
+// import reducer function
+import { reducer } from "../utils/reducers";
+
 // create a sample of what our global state will look like
 const initialState = {
 	products: [],
