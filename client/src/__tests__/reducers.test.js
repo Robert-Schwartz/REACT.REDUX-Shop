@@ -131,3 +131,30 @@ test("UPDATE_CART_QUANTITY", () => {
 
 	expect(initialState.cartOpen).toBe(false);
 });
+
+// clear cart
+test("CLEAR_CART", () => {
+	let newState = reducer(initialState, {
+		type: CLEAR_CART,
+	});
+
+	expect(newState.cartOpen).toBe(false);
+	expect(newState.cart.length).toBe(0);
+	expect(initialState.cart.length).toBe(2);
+});
+
+// Handle Cart Toggle
+test("TOGGLE_CART", () => {
+	let newState = reducer(initialState, {
+		type: TOGGLE_CART,
+	});
+
+	expect(newState.cartOpen).toBe(true);
+	expect(initialState.cartOpen).toBe(false);
+
+	let newState2 = reducer(newState, {
+		type: TOGGLE_CART,
+	});
+
+	expect(newState2.cartOpen).toBe(false);
+});
