@@ -21,6 +21,8 @@ Every Context object comes with two components, a Provider and Consumer. The Pro
 const StoreProvider = ({ value = [], ...props }) => {
 	const [state, dispatch] = useProductReducer({
 		products: [],
+		cart: [],
+		cartOpen: false,
 		categories: [],
 		currentCategory: "",
 	});
