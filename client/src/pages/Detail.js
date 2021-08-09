@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
+import Cart from "../components/Cart";
 
 // global state needs
 import { useStoreContext } from "../utils/GlobalState";
@@ -53,6 +54,7 @@ function Detail() {
 				</div>
 			) : null}
 			{loading ? <img src={spinner} alt="loading" /> : null}
+			<Cart />
 		</>
 	);
 }
