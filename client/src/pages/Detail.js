@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import Cart from "../components/Cart";
+import spinner from "../assets/spinner.gif";
 
 // global state needs
 import { useStoreContext } from "../utils/GlobalState";
 
 import { QUERY_PRODUCTS } from "../utils/queries";
-import spinner from "../assets/spinner.gif";
+import { idbPromise } from "../utils/helpers";
 
 import {
 	REMOVE_FROM_CART,
@@ -50,16 +51,32 @@ function Detail() {
 		});
 	};
 
-	useEffect(() => {
-		if (products.length) {
-			setCurrentProduct(products.find((product) => product._id === id));
-		} else if (data) {
+useEffect(() => {
+	// already in global store
+	if (products.length) {
+		setCurrentProduct(products.find((product) => product._id === id));
+	}
+	// retrieved from server
+	else if (data) {
+		dispatch({
+			type: UPDATE_PRODUCTS,
+			products: data.products,
+		});
+
+		data.products.forEach((product) => {
+			idbPromise("products", "put", product);
+		});
+	}
+	// get cache from idb
+	else if (!loading) {
+		idbPromise("products", "get").then((indexedProducts) => {
 			dispatch({
 				type: UPDATE_PRODUCTS,
-				products: data.products,
+				products: indexedProducts,
 			});
-		}
-	}, [products, data, dispatch, id]);
+		});
+	}
+}, [products, data, loading, dispatch, id]);
 
 	return (
 		<>
